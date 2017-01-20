@@ -75,7 +75,12 @@ public class Processer extends Thread{
                     }
 
                     if(selectionKey.isReadable()) {
-                        doRead(selectionKey);
+                        //TODO 改为checked 异常
+                        try {
+                            doRead(selectionKey);
+                        } catch (IllegalStateException ie) {
+                            closeKey(selectionKey);
+                        }
                     }
 
                     if(selectionKey.isWritable()) {

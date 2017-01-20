@@ -1,14 +1,9 @@
 package com.villcore.nio;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SimpleNIOClient {
     public static void main(String[] args) throws InterruptedException {
-        String msg = "hello nio...!";
+        String msg[] = new String[]{"hello nio...!",  "just say hello.", "repeat again..."};
 
         try {
             SocketChannel socketChannel = SocketChannel.open();
@@ -26,7 +21,7 @@ public class SimpleNIOClient {
             socketChannel.connect(new InetSocketAddress("127.0.0.1", 19090));
 
             for(int i = 0; i < 10; i++) {
-                byte[] bytes = msg.getBytes("utf-8");
+                byte[] bytes = msg[i % msg.length].getBytes("utf-8");
                 SendMessage sendMessage = new SendMessage(bytes.length,
                         ByteBuffer.allocate(bytes.length).put(bytes));
 
