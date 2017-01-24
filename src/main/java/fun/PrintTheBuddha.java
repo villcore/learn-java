@@ -1,10 +1,10 @@
-package com.villcore.nio.com.villcore.fun;
+package fun;
 
 /**
  * Created by villcore on 2017/1/24.
  */
 public class PrintTheBuddha {
-    private static final String CharString = "\n" +
+    private static final String STRING_TEMPLATE = "\n" +
             "                   _ooOoo_\n" +
             "                  o8888888o\n" +
             "                  88\" . \"88\n" +
@@ -24,10 +24,12 @@ public class PrintTheBuddha {
             "======`-.____`-.___\\_____/___.-`____.-'======\n" +
             "                   `=---='\n"+
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-            "         佛祖保佑       永无BUG\n" + ""
-            ;
+            "         %s       %s\n";
 
     public static void main(String[] args) {
-        System.out.println(CharString);
+    	if(args.length != 2) {
+    		System.exit(0);
+    	}
+        System.out.println(String.format(STRING_TEMPLATE, args[0], args[1]));
     }
 }
