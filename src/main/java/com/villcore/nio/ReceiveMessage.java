@@ -32,7 +32,7 @@ public class ReceiveMessage {
             sizeBuffer.flip();
             int size = sizeBuffer.getInt();
             if(size <= 0 || size >= MAX_BUFFER_SIZE) {
-                throw new IllegalStateException("receive byte size exceed max size");
+                throw new IllegalStateException("receive byte size is illegal");
             }
             contentBuffer = ByteBuffer.allocate(size);
         }

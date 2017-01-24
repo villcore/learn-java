@@ -70,21 +70,25 @@ public class Processer extends Thread{
                     SelectionKey selectionKey = it.next();
                     it.remove();
 
-                    if(!selectionKey.isValid()) {
-                        closeKey(selectionKey);
-                    }
-
-                    if(selectionKey.isReadable()) {
-                        //TODO 改为checked 异常
-                        try {
-                            doRead(selectionKey);
-                        } catch (IllegalStateException ie) {
+                    try {
+                        if (!selectionKey.isValid()) {
                             closeKey(selectionKey);
                         }
-                    }
 
-                    if(selectionKey.isWritable()) {
-                        doWrite(selectionKey);
+                        if (selectionKey.isValid() && selectionKey.isReadable()) {
+                            //TODO 改为checked 异常
+                            try {
+                                doRead(selectionKey);
+                            } catch (IllegalStateException ie) {
+                                closeKey(selectionKey);
+                            }
+                        }
+
+                        if (selectionKey.isValid() && selectionKey.isWritable()) {
+                            doWrite(selectionKey);
+                        }
+                    } catch (CancelledKeyException cke) {
+                        closeKey(selectionKey);
                     }
                 }
             } catch (IOException e) {
@@ -129,6 +133,7 @@ public class Processer extends Thread{
         socketChannel.socket().close();
         socketChannel.close();
         selectionKey.cancel();
+        System.out.println(String.format("client [%s] close...", socketChannel.socket().getInetAddress().toString()));
     }
 
     private void doWrite(SelectionKey selectionKey) throws IOException {
@@ -168,4 +173,29 @@ public class Processer extends Thread{
         System.out.println(String.format("receive msg : %s", new String(bytes, "utf-8")));
         return null;
     }
+
+    /*
+
+                   _ooOoo_
+                  o8888888o
+                  88" . "88
+                  (| -_- |)
+                  O\  =  /O
+               ____/`---'\____
+             .'  \\|     |//  `.
+            /  \\|||  :  |||//  \
+           /  _||||| -:- |||||-  \
+           |   | \\\  -  /// |   |
+           | \_|  ''\---/''  |   |
+           \  .-\__  `-`  ___/-. /
+         ___`. .'  /--.--\  `. . __
+      ."" '<  `.___\_<|>_/___.'  >'"".
+     | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+     \  \ `-.   \_ __\ /__ _/   .-` /  /
+
+======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         佛祖保佑       永无BUG
+*/
 }

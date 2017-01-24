@@ -18,6 +18,7 @@ public class SimpleNIOClient {
             socketChannel.configureBlocking(true);
             socketChannel.socket().setKeepAlive(true);
             socketChannel.socket().setTcpNoDelay(true);
+            socketChannel.socket().setSoTimeout(30 * 1000);
             socketChannel.connect(new InetSocketAddress("127.0.0.1", 19090));
 
             for(int i = 0; i < 10; i++) {
