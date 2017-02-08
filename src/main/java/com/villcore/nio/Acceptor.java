@@ -98,17 +98,17 @@ public class Acceptor extends Thread {
         ServerSocketChannel serverChanel = (ServerSocketChannel) selectionKey.channel();
         //serverChanel.socket().setReceiveBufferSize(receiveBufferSize);
 
-        SocketChannel clientChanel = serverChanel.accept();
-        clientChanel.configureBlocking(false);
-        clientChanel.socket().setTcpNoDelay(true);
-        //clientChanel.socket().setSendBufferSize(sendBufferSize);
+        SocketChannel clientChannel = serverChanel.accept();
+        clientChannel.configureBlocking(false);
+        clientChannel.socket().setTcpNoDelay(true);
+        //clientChannel.socket().setSendBufferSize(sendBufferSize);
         connectionCount++;
         if(connectionCount >= Integer.MAX_VALUE) {
             connectionCount = 0;
         }
 
         Processer processer = getProcesser(this.processers, connectionCount);
-        processer.addNewSocketChannel(clientChanel);
+        processer.addNewSocketChannel(clientChannel);
     }
 
     private Processer getProcesser(Processer[] processers, int count) {
