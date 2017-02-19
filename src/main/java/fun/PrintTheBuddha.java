@@ -24,8 +24,7 @@ public class PrintTheBuddha {
             "======`-.____`-.___\\_____/___.-`____.-'======\n" +
             "                   `=---='\n"+
             "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n" +
-            "         %s       %s\n" +
-            "https://github.com/villcore/learn-java/blob/master/src/main/java/fun/PrintTheBuddha.java";
+            "         %s       %s\n";
 
     public static void main(String[] args) {
     	if(args.length != 2) {
