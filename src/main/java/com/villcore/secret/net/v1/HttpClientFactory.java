@@ -29,11 +29,12 @@ public class HttpClientFactory {
 			return newHttpClient();
 		};
 	};
-	
+
 	public static HttpClient createHttpClient() {
 		return threadLocalHittpClient.get();
 		//return newHttpClient();
 	}
+
 	private static HttpClient newHttpClient() {
 		HttpClient customHttpClient = null;
 		HttpParams params = new BasicHttpParams();
@@ -61,7 +62,6 @@ public class HttpClientFactory {
 	public static void main(String[] args) {
 		System.out.println(createHttpClient());
 		System.out.println(createHttpClient());
-
 	}
 }
 

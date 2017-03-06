@@ -9,10 +9,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ExportTrace {
     private static final String CHARSET = "utf-8";
@@ -57,10 +55,35 @@ public class ExportTrace {
             System.out.println("login failed ! exited...");
         }
 
+        System.out.println(getTimeStr(getCalendar(2017, 2, 6, 0, 0, 0)));
+
+        Calendar startCalendar = getCalendar(2017, 2, 6, 0, 0, 0);
+        Calendar endCalendar = getCalendar(2017, 3, 7, 0, 0, 0);
+
+        Calendar curCalendar = startCalendar;
+
+        while(curCalendar.before(endCalendar)) {
+
+
+            curCalendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        int a = 1;
+        if(a == 1) {
+            return;
+        }
 
         //查询
         String startTime = "2017-02-27 00:00:00";
         String endTime = "2017-02-28 00:00:00";
+
+        int startYear = 2017;
+        int startMonth = 2;
+        int startDayOfMonth = 6;
+
+        int endYear = 2017;
+        int endMonth = 3;
+        int endDayOfMonth = 7;
 
         Map<String, String> filedNameToNo = new HashMap<>();
         filedNameToNo.put("搜索引擎", "5195");
@@ -177,5 +200,22 @@ public class ExportTrace {
                 page++;
             }
         }
+    }
+
+    public static Calendar getCalendar (int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, second);
+        return calendar;
+    }
+
+    public static String getTimeStr (Calendar calendar) {
+        SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        long timestamp = calendar.getTimeInMillis();
+        return dataFormat.format(new Date(timestamp));
     }
 }
