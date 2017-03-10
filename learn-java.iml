@@ -136,5 +136,13 @@
     <orderEntry type="library" name="Maven: org.apache.sling:org.apache.sling.commons.json:2.0.6" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-clients_2.11:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.flink:flink-optimizer_2.11:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.flink:flink-cep_2.10:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.influxdb:influxdb-java:2.5" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.retrofit2:retrofit:2.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.retrofit2:converter-moshi:2.1.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.moshi:moshi:1.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.11.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:logging-interceptor:3.5.0" level="project" />
   </component>
 </module>
