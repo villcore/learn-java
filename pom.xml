@@ -17,11 +17,21 @@
             <version>0.2.2</version>
         </dependency>
 
-    <!-- https://mvnrepository.com/artifact/com.springml/sftp.client -->
-    <dependency>
-        <groupId>com.springml</groupId>
-        <artifactId>sftp.client</artifactId>
-        <version>1.0.0</version>
-    </dependency>
+        <!-- https://mvnrepository.com/artifact/com.springml/sftp.client -->
+        <dependency>
+            <groupId>com.springml</groupId>
+            <artifactId>sftp.client</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
+        </dependency>
     </dependencies>
 </project>
