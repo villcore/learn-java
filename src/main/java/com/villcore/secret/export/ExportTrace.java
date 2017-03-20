@@ -7,7 +7,9 @@ import org.apache.http.client.HttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,41 +51,10 @@ public class ExportTrace {
 
         if (resp.contains("Redirecting to ")) {
             System.out.println("login success !");
-        }
-        else {
+        } else {
             System.out.println(resp);
             System.out.println("login failed ! exited...");
         }
-
-        System.out.println(getTimeStr(getCalendar(2017, 2, 6, 0, 0, 0)));
-
-        Calendar startCalendar = getCalendar(2017, 2, 6, 0, 0, 0);
-        Calendar endCalendar = getCalendar(2017, 3, 7, 0, 0, 0);
-
-        Calendar curCalendar = startCalendar;
-
-        while(curCalendar.before(endCalendar)) {
-
-
-            curCalendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-
-        int a = 1;
-        if(a == 1) {
-            return;
-        }
-
-        //查询
-        String startTime = "2017-02-27 00:00:00";
-        String endTime = "2017-02-28 00:00:00";
-
-        int startYear = 2017;
-        int startMonth = 2;
-        int startDayOfMonth = 6;
-
-        int endYear = 2017;
-        int endMonth = 3;
-        int endDayOfMonth = 7;
 
         Map<String, String> filedNameToNo = new HashMap<>();
         filedNameToNo.put("搜索引擎", "5195");
@@ -107,97 +78,129 @@ public class ExportTrace {
         filedNameToNo.put("武术", "5177");
         filedNameToNo.put("Internet服务提供商", "5188");
 
-        for (Map.Entry<String, String> entry : filedNameToNo.entrySet()) {
-            String filedName = entry.getKey();
-            String filed = entry.getValue();
-            System.out.println(filedName + " -> " + filed);
-        }
-        int allowedMaxEmptyPage = 5;
+        Calendar startCalendar = getCalendar(2017, 3, 14, 0, 0, 0);
+        Calendar endCalendar = getCalendar(2017, 3, 18, 0, 0, 0);
 
-        for (Map.Entry<String, String> entry : filedNameToNo.entrySet()) {
-            String filedName = entry.getKey();
-            String filed = entry.getValue();
+        Calendar curCalendar = startCalendar;
 
-            int page = 1;
-            int emptyPage = 0;
-            int row = 50;
 
-            java.util.List<String> records = new ArrayList<>();
-            int itemCount = 0;
+        FileOutputStream fos = new FileOutputStream("c://" + System.currentTimeMillis() + ".dat", true);
+        PrintStream ps = new PrintStream(fos);
 
-            System.out.println("query info for : " + filedName);
+        while (curCalendar.before(endCalendar)) {
+            Calendar tmp = Calendar.getInstance();
+            tmp.setTime(curCalendar.getTime());
 
-            while (true) {
-                if (emptyPage >= allowedMaxEmptyPage) {
-                    System.out.println("exceed max empty page for " + filedName);
-                    break;
-                }
+            curCalendar.add(Calendar.DAY_OF_MONTH, 1);
 
-                String queryUrl = "http://192.168.0.1/policy/audit-record-webtitle-data-detail?terminal_type=all";
+            Calendar next = Calendar.getInstance();
+            next.setTime(curCalendar.getTime());
 
-                Map<String, String> queryHeaderMap = new HashMap<>();
-                queryHeaderMap.put("Accept", "application/json, text/javascript, */*; q=0.01");
-                //queryHeaderMap.put("Accept-Encoding", "gzip, deflate");
-                queryHeaderMap.put("Accept-Language", "zh-CN,zh;q=0.8");
-                queryHeaderMap.put("Connection", "keep-alive");
-                queryHeaderMap.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                queryHeaderMap.put("Accept", "application/json, text/javascript, */*; q=0.01");
-                queryHeaderMap.put("Host", "192.168.0.1");
-                queryHeaderMap.put("Origin", "http://192.168.0.1");
-                queryHeaderMap.put("Referer", "http://192.168.0.1/");
-                queryHeaderMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
-                queryHeaderMap.put("X-Requested-With", "XMLHttpRequest");
+            System.out.println(getTimeStr(tmp) + " -> " + getTimeStr(next));
 
-                Map<String, String> queryFormMap = new HashMap<>();
-                //queryFormMap.put("terminal_type", "all");
-                queryFormMap.put("start_time", startTime);
-                queryFormMap.put("end_time", endTime);
-                queryFormMap.put("keyword_ip_name", "");
-                queryFormMap.put("src_ip", "");
-                queryFormMap.put("user_id", "");
-                queryFormMap.put("groupby", "src_ip");
-                queryFormMap.put("keytype", "");
-                queryFormMap.put("keyword", "");
-                queryFormMap.put("content_field", filed);
-                queryFormMap.put("page", String.valueOf(page));
-                queryFormMap.put("rows", String.valueOf(row));
+            //查询
+            String startTime = getTimeStr(tmp);
+            String endTime =  getTimeStr(next);
 
-                StringBuilder sb = new StringBuilder();
-                sb.append(queryUrl);
 
-                for(Map.Entry<String, String> entry2 : queryFormMap.entrySet()) {
-                    String paramName = entry2.getKey();
-                    String paramValue = entry2.getValue();
+            for (Map.Entry<String, String> entry : filedNameToNo.entrySet()) {
+                String filedName = entry.getKey();
+                String filed = entry.getValue();
+                System.out.println(filedName + " -> " + filed);
+            }
+            int allowedMaxEmptyPage = 5;
 
-                     sb.append("&")
-                            .append(paramName)
-                            .append("=")
-                            .append(URLEncoder.encode(paramValue, "utf-8"));
-                }
+            for (Map.Entry<String, String> entry : filedNameToNo.entrySet()) {
+                String filedName = entry.getKey();
+                String filed = entry.getValue();
 
-                //System.out.println(sb.toString());
+                int page = 1;
+                int emptyPage = 0;
+                int row = 2;
 
-                resp = NetUtil.doPost(httpClient, sb.toString(), CHARSET, loginHeaderMap, loginFormMap);
-                //System.out.println(resp);
-                JSONObject obj = new JSONObject(resp);
-                if (!obj.has("rows")) {
-                    emptyPage++;
-                }
-                JSONArray rows = obj.getJSONArray("rows");
+                java.util.List<String> records = new ArrayList<>();
+                int itemCount = 0;
 
-                if (rows.length() == 0) {
-                    emptyPage++;
-                }
-                Iterator<Object> it = rows.iterator();
+                System.out.println("query info for : " + filedName);
 
-                while (it.hasNext()) {
-                    JSONObject rowItem = (JSONObject) it.next();
-                    //records.add(rowItem.toString());
-                    if(rowItem.getString("lan_mac").trim().equals("C4:8E:8F:74:6F:35")) {
-                        System.out.println(rowItem.getString("capture_time") + " : " + rowItem.getString("lan_mac") + " -> " + rowItem.getString("title"));
+                while (true) {
+                    if (emptyPage >= allowedMaxEmptyPage) {
+                        System.out.println("exceed max empty page for " + filedName);
+                        break;
+                    }
+
+                    String queryUrl = "http://192.168.0.1/policy/audit-record-webtitle-data-detail?terminal_type=all";
+
+                    Map<String, String> queryHeaderMap = new HashMap<>();
+                    queryHeaderMap.put("Accept", "application/json, text/javascript, */*; q=0.01");
+                    //queryHeaderMap.put("Accept-Encoding", "gzip, deflate");
+                    queryHeaderMap.put("Accept-Language", "zh-CN,zh;q=0.8");
+                    queryHeaderMap.put("Connection", "keep-alive");
+                    queryHeaderMap.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    queryHeaderMap.put("Accept", "application/json, text/javascript, */*; q=0.01");
+                    queryHeaderMap.put("Host", "192.168.0.1");
+                    queryHeaderMap.put("Origin", "http://192.168.0.1");
+                    queryHeaderMap.put("Referer", "http://192.168.0.1/");
+                    queryHeaderMap.put("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
+                    queryHeaderMap.put("X-Requested-With", "XMLHttpRequest");
+
+                    Map<String, String> queryFormMap = new HashMap<>();
+                    //queryFormMap.put("terminal_type", "all");
+                    queryFormMap.put("start_time", startTime);
+                    queryFormMap.put("end_time", endTime);
+                    queryFormMap.put("keyword_ip_name", "");
+                    queryFormMap.put("src_ip", "");
+                    queryFormMap.put("user_id", "");
+                    queryFormMap.put("groupby", "src_ip");
+                    queryFormMap.put("keytype", "");
+                    queryFormMap.put("keyword", "");
+                    queryFormMap.put("content_field", filed);
+                    queryFormMap.put("page", String.valueOf(page));
+                    queryFormMap.put("rows", String.valueOf(row));
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(queryUrl);
+
+                    for (Map.Entry<String, String> entry2 : queryFormMap.entrySet()) {
+                        String paramName = entry2.getKey();
+                        String paramValue = entry2.getValue();
+
+                        sb.append("&")
+                                .append(paramName)
+                                .append("=")
+                                .append(URLEncoder.encode(paramValue, "utf-8"));
+                    }
+
+                    //System.out.println(sb.toString());
+
+                    //System.out.println(resp);
+                    try {
+                        resp = NetUtil.doPost(httpClient, sb.toString(), CHARSET, loginHeaderMap, loginFormMap);
+                        JSONObject obj = new JSONObject(resp);
+                        if (!obj.has("rows")) {
+                            emptyPage++;
+                        }
+                        JSONArray rows = obj.getJSONArray("rows");
+
+                        if (rows.length() == 0) {
+                            emptyPage++;
+                        }
+                        Iterator<Object> it = rows.iterator();
+
+                        while (it.hasNext()) {
+                            JSONObject rowItem = (JSONObject) it.next();
+                            //records.add(rowItem.toString());
+                            if (rowItem.getString("lan_mac").trim().equals("C4:8E:8F:74:6F:35")) {
+                                System.out.println(rowItem.getString("capture_time") + " : " + rowItem.getString("lan_mac") + " -> " + rowItem.getString("title"));
+                                ps.println(rowItem.getString("capture_time") + " : " + rowItem.getString("lan_mac") + " -> " + rowItem.getString("title"));
+                            }
+                        }
+                        page++;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.err.println(resp);
                     }
                 }
-                page++;
             }
         }
     }
@@ -205,7 +208,7 @@ public class ExportTrace {
     public static Calendar getCalendar (int year, int month, int dayOfMonth, int hourOfDay, int minute, int second) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.MONTH, month - 1);
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         calendar.set(Calendar.MINUTE, minute);

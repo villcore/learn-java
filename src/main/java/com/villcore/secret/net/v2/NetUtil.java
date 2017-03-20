@@ -129,7 +129,7 @@ public class NetUtil {
 	}
 
 	public static String processHttpRespStr(String respStr) {
-		return replaceUrlEscape(decode(respStr));		
+		return replaceUrlEscape(decode(respStr));
 	}
 
 	public static void main(String[] args) throws ClientProtocolException, IOException {
@@ -147,7 +147,7 @@ public class NetUtil {
 		paramMap.put("type", "tag");
 		//System.out.println(NetUtil.doPost(httpClient, "http://api.baiyue.baidu.com/sn/api/getuserdata", Collections.singletonMap("Host", "api.baiyue.baidu.com"), paramMap, "utf-8"));
 		NetUtil.doAsyncPost(httpClient, "http://api.baiyue.baidu.com/sn/api/getuserdata", Collections.singletonMap("Host", "api.baiyue.baidu.com"), paramMap, "utf-8", new Callback() {
-			
+
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
 				if(response.isSuccessful()) {
@@ -155,11 +155,11 @@ public class NetUtil {
 					System.out.println(response.request().toString());
 				}
 			}
-			
+
 			@Override
 			public void onFailure(Call call, IOException e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		}, null);
 	}
